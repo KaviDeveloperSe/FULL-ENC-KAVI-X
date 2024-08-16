@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Border Loading Animation</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <style>
+    /* Google Fonts - Poppins */
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      height: 100vh;
+      background-color: #131221;
+    }
+    body,
+    .container,
+    .overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      position: relative;
+      height: 450px;
+      width: 350px;
+      border-radius: 16px;
+      background-color: #fff;
+      overflow: hidden;
+      transition: background-color 0.5s;
+    }
+    .container.active {
+      background-color: #000;
+    }
+    .container::before {
+      content: "";
+      position: absolute;
+      height: 650px;
+      width: 650px;
+      background-image: conic-gradient(transparent, transparent, transparent, #fff);
+    }
+    .container.active:before {
+      animation: rotate 4s linear infinite;
+    }
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .container .overlay {
+      position: absolute;
+      height: 440px;
+      width: 340px;
+      font-size: 40px;
+      font-weight: 500;
+      color: #fff;
+      border-radius: 12px;
+      background-color: #131221;
+      transition: opacity 0.5s;
+    }
+    .bot-info {
+      display: none;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 400;
+      text-align: center;
+      padding: 20px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      opacity: 0;
+      background-color: #1a1a1a; /* Static dark background color */
+      animation: glowingBorder 5s linear infinite;
+    }
+
+    @keyframes colorChange {
+      0% {
+        background-color: #111; /* Darker shade */
+      }
+      50% {
+        background-color: #333; /* Lighter shade */
+      }
+      100% {
+        background-color: #111; /* Darker shade */
+      }
+    }
+    @keyframes glowingBorder {
+      0% {
+        border: 2px solid #ff0000;
+        box-shadow: 0 0 10px #ff0000;
+      }
+      50% {
+        border: 2px solid #00ffd5;
+        box-shadow: 0 0 10px #00ffd5;
+      }
+      100% {
+        border: 2px solid #ff0000;
+        box-shadow: 0 0 10px #ff0000;
+      }
+    }
+    .bot-info.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+    }
+  </style>
+
+  <body>
+    <div class="container active">
+      <span class="overlay" id="percent">0%</span>
+      <div class="bot-info" id="botInfo">
+        <div>
+          <h1>Bot Information</h1>
+          <p>Your bot is now fully loaded!</p>
+          <p>Additional bot details can go here.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const container = document.querySelector(".container"),
+        percent = document.querySelector("#percent"),
+        botInfo = document.querySelector("#botInfo");
+
+      let perVal = 0;
+
+      let increment = setInterval(() => {
+        perVal++;
+        percent.textContent = `${perVal}%`;
+
+        if (perVal == 100) {
+          clearInterval(increment);
+          container.classList.remove("active");
+          botInfo.classList.add("active");
+        }
+      }, 100);
+    </script>
+  </body>
+</html>
